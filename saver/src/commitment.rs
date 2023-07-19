@@ -6,10 +6,8 @@ use ark_ec::{AffineRepr, CurveGroup, Group, VariableBaseMSM};
 use ark_ff::{Field, One, PrimeField};
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
 use ark_std::{vec, vec::Vec};
-use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
 
-use dock_crypto_utils::{msm::multiply_field_elems_with_same_group_elem, serde_utils::*};
+use dock_crypto_utils::{msm::multiply_field_elems_with_same_group_elem};
 
 /// Getting a commitment to the message as a single field element from commitment to its b-ary decomposition.
 ///
@@ -40,14 +38,8 @@ use dock_crypto_utils::{msm::multiply_field_elems_with_same_group_elem, serde_ut
 /// to the full message, they can be divided to get a value that is unique to the message and thus can
 /// be used to link 2 different proofs created for the same message. One solution to this is to generate a
 /// different `G` for each proof by hashing an agreed upon string appended with a counter.
-#[serde_as]
-#[derive(
-    Clone, PartialEq, Eq, Debug, CanonicalSerialize, CanonicalDeserialize, Serialize, Deserialize,
-)]
-pub struct ChunkedCommitment<G: AffineRepr>(
-    #[serde_as(as = "ArkObjectBytes")] pub G,
-    #[serde_as(as = "Vec<ArkObjectBytes>")] pub Vec<G>,
-);
+#[derive(Clone, PartialEq, Eq, Debug, CanonicalSerialize, CanonicalDeserialize)]
+pub struct ChunkedCommitment<G: AffineRepr>(pub G, pub Vec<G>);
 
 impl<G: AffineRepr> ChunkedCommitment<G> {
     /// Decompose a given field element `message` to `chunks_count` chunks each of size `chunk_bit_size` and

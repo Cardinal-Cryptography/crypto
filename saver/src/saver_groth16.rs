@@ -13,8 +13,6 @@ use ark_std::{
 };
 
 use legogroth16::aggregation::{groth16::AggregateProof, srs::VerifierSRS};
-use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
 
 use crate::encryption::Ciphertext;
 pub use ark_groth16::{
@@ -27,20 +25,15 @@ use dock_crypto_utils::{
 };
 
 use crate::error::SaverError;
-use dock_crypto_utils::{serde_utils::*, transcript::Transcript};
+use dock_crypto_utils::{transcript::Transcript};
 
 use crate::{keygen::EncryptionKey, setup::EncryptionGens};
 
-#[serde_as]
-#[derive(
-    Clone, Debug, PartialEq, CanonicalSerialize, CanonicalDeserialize, Serialize, Deserialize,
-)]
+#[derive(Clone, Debug, PartialEq, CanonicalSerialize, CanonicalDeserialize)]
 pub struct ProvingKey<E: Pairing> {
     /// Groth16's proving key
-    #[serde_as(as = "ArkObjectBytes")]
     pub pk: Groth16ProvingKey<E>,
     /// The element `-gamma * G` in `E::G1`.
-    #[serde_as(as = "ArkObjectBytes")]
     pub gamma_g1: E::G1Affine,
 }
 

@@ -23,26 +23,18 @@ use ark_std::{
     vec::Vec,
     UniformRand,
 };
-use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
 
 use crate::utils::CHUNK_TYPE;
-use dock_crypto_utils::{ff::non_zero_random, serde_utils::*};
+use dock_crypto_utils::{ff::non_zero_random};
 
 #[cfg(feature = "parallel")]
 use rayon::prelude::*;
 
 /// Ciphertext used with Groth16
-#[serde_as]
-#[derive(
-    Clone, PartialEq, Eq, Debug, CanonicalSerialize, CanonicalDeserialize, Serialize, Deserialize,
-)]
+#[derive(Clone, PartialEq, Eq, Debug, CanonicalSerialize, CanonicalDeserialize)]
 pub struct Ciphertext<E: Pairing> {
-    #[serde_as(as = "ArkObjectBytes")]
     pub X_r: E::G1Affine,
-    #[serde_as(as = "Vec<ArkObjectBytes>")]
     pub enc_chunks: Vec<E::G1Affine>,
-    #[serde_as(as = "ArkObjectBytes")]
     pub commitment: E::G1Affine,
 }
 
