@@ -16,12 +16,11 @@ ark-r1cs-std.workspace = true
 ark-relations.workspace = true
 ark-groth16.workspace = true
 digest.workspace = true
-rayon = {workspace = true, optional = true}
+rayon = { workspace = true, optional = true }
 dock_crypto_utils = { version = "0.14.0", default-features = false, path = "../utils" }
-serde.workspace = true
-serde_with.workspace = true
-zeroize.workspace = true
-legogroth16 = { version = "0.9.0", default-features = false, features = ["aggregation"], path = "../legogroth16" }
+legogroth16 = { version = "0.9.0", default-features = false, features = [
+    "aggregation",
+], path = "../legogroth16" }
 merlin = { package = "dock_merlin", version = "2.0", default-features = false, path = "../merlin" }
 
 [dev-dependencies]
@@ -33,7 +32,26 @@ proof_system = { path = "../proof_system" }
 bbs_plus = { path = "../bbs_plus" }
 
 [features]
-default = [ "parallel" ]
-std = [ "ark-ff/std", "ark-ec/std", "ark-std/std", "ark-serialize/std", "ark-groth16/std", "legogroth16/std", "ark-r1cs-std/std", "ark-relations/std", "merlin/std"]
-print-trace = [ "ark-std/print-trace" ]
-parallel = [ "std", "ark-ff/parallel", "ark-ec/parallel", "ark-std/parallel", "ark-groth16/parallel", "rayon", "ark-r1cs-std/parallel", "legogroth16/parallel" ]
+default = ["parallel"]
+std = [
+    "ark-ff/std",
+    "ark-ec/std",
+    "ark-std/std",
+    "ark-serialize/std",
+    "ark-groth16/std",
+    "legogroth16/std",
+    "ark-r1cs-std/std",
+    "ark-relations/std",
+    "merlin/std",
+]
+print-trace = ["ark-std/print-trace"]
+parallel = [
+    "std",
+    "ark-ff/parallel",
+    "ark-ec/parallel",
+    "ark-std/parallel",
+    "ark-groth16/parallel",
+    "rayon",
+    "ark-r1cs-std/parallel",
+    "legogroth16/parallel",
+]
