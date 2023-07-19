@@ -8,8 +8,6 @@ use ark_ff::PrimeField;
 use ark_serialize::*;
 
 use serde::{de::Error, Deserializer, Serializer};
-use serde_with::{DeserializeAs, SerializeAs};
-use zeroize::Zeroize;
 
 use core::iter::Zip;
 
@@ -245,45 +243,5 @@ where
     fn serialized_size(&self, compress: Compress) -> usize {
         self.left.as_slice().serialized_size(compress)
             + self.right.as_slice().serialized_size(compress)
-    }
-}
-
-impl<LeftAs, RightAs, Left, Right> SerializeAs<OwnedPairs<LeftAs, RightAs>>
-    for OwnedPairs<Left, Right>
-where
-    Left: SerializeAs<LeftAs>,
-    Right: SerializeAs<RightAs>,
-{
-    fn serialize_as<S>(
-        pairs: &OwnedPairs<LeftAs, RightAs>,
-        serializer: S,
-    ) -> Result<S::Ok, S::Error>
-    where
-        S: Serializer,
-    {
-        <(&[Left], &[Right])>::serialize_as(&(&pairs.left, &pairs.right), serializer)
-    }
-}
-
-impl<'de, LeftAs, RightAs, Left, Right> DeserializeAs<'de, OwnedPairs<LeftAs, RightAs>>
-    for OwnedPairs<Left, Right>
-where
-    Left: DeserializeAs<'de, LeftAs>,
-    Right: DeserializeAs<'de, RightAs>,
-{
-    fn deserialize_as<D>(deserializer: D) -> Result<OwnedPairs<LeftAs, RightAs>, D::Error>
-    where
-        D: Deserializer<'de>,
-    {
-        let (left, right) = <(Vec<Left>, Vec<Right>)>::deserialize_as(deserializer)?;
-
-        OwnedPairs::new(left, right).ok_or(Error::custom("Pair lengths are not equal"))
-    }
-}
-
-impl<Left: Zeroize, Right: Zeroize> Zeroize for OwnedPairs<Left, Right> {
-    fn zeroize(&mut self) {
-        self.left.zeroize();
-        self.right.zeroize();
     }
 }

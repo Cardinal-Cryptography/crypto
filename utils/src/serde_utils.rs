@@ -3,7 +3,6 @@
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, SerializationError};
 use ark_std::{io, string::ToString, vec::Vec};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
-use serde_with::{DeserializeAs, SerializeAs};
 
 pub type ArkObjectBytes = AsCanonical;
 
@@ -29,29 +28,6 @@ impl AsCanonical {
     {
         let y: Vec<u8> = Deserialize::deserialize(deserializer)?;
         T::deserialize_compressed(y.as_slice()).map_err(serde::de::Error::custom)
-    }
-}
-
-impl<T> SerializeAs<T> for AsCanonical
-where
-    T: CanonicalSerialize,
-{
-    fn serialize_as<S>(x: &T, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: Serializer,
-    {
-        Self::serialize(x, serializer)
-    }
-}
-impl<'de, T> DeserializeAs<'de, T> for AsCanonical
-where
-    T: CanonicalDeserialize,
-{
-    fn deserialize_as<D>(deserializer: D) -> Result<T, D::Error>
-    where
-        D: Deserializer<'de>,
-    {
-        Self::deserialize(deserializer)
     }
 }
 

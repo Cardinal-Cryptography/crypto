@@ -1,7 +1,6 @@
 [workspace]
 
 members = [
-    "utils",
     "schnorr_pok",
     "bbs_plus",
     "vb_accumulator",
@@ -39,8 +38,10 @@ ark-groth16 = { version = "^0.4.0", default-features = false }
 rayon = { version = "1" }
 digest = { version = "0.10", default-features = false, features = ["alloc"] }
 serde = { version = "1.0", default-features = false, features = ["derive"] }
-serde_with = { package = "serde_with_macros", version = "3.1.0", default-features = false }
-zeroize = { version = "1.6.0", default-features = false, features = ["derive"] }
+serde_with = { version = "1.14.0", default-features = false, features = [
+    "macros",
+] }
+zeroize = { version = "1.6.0", features = ["derive"] }
 blake2 = { version = "0.10", default-features = false }
 ark-bls12-381 = { version = "^0.4.0", default-features = false, features = [
     "curve",

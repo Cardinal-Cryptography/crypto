@@ -3,20 +3,12 @@ use ark_ff::PrimeField;
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
 use ark_std::{fmt::Debug, vec::Vec};
 
-use crate::serde_utils::*;
-use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
-
 /// Use when same elliptic curve point is to be multiplied by several scalars.
-#[serde_as]
-#[derive(
-    Clone, PartialEq, Eq, Debug, CanonicalSerialize, CanonicalDeserialize, Serialize, Deserialize,
-)]
+#[derive(Clone, PartialEq, Eq, Debug, CanonicalSerialize, CanonicalDeserialize)]
 pub struct WindowTable<G: CurveGroup> {
     scalar_size: usize,
     window_size: usize,
     outerc: usize,
-    #[serde_as(as = "Vec<Vec<ArkObjectBytes>>")]
     table: Vec<Vec<G::Affine>>,
 }
 
